@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
 #include "Stopwatch.h"
 
 QT_BEGIN_NAMESPACE
@@ -15,9 +16,16 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+     void time_sl0();
 
 private slots:
     void on_pb_t_toggled(bool checked);
+    void get_string(QString str);
+
+    void on_pb_ss_toggled(bool checked);
+
+    void on_pb_clear_clicked();
 
 private:
     Ui::MainWindow *ui;
