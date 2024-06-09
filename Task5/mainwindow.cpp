@@ -13,9 +13,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pb_ss->setCheckable(true);
 
     ui->tbr->setText("Начало");
+
+    bool started0=false;
+    time_mw=new QTimer(this);
+    time_mw->setInterval(1);
+    startTimer(1000);
+    connect (time_mw, &QTimer::timeout, this, &MainWindow::time_sl0_mw);
+
 connect(stw, &Stopwatch::sig_to_mw_label
         , this, &MainWindow::get_string);   //параметры не пишутся
- connect (stw->time, &QTimer::timeout, this, &MainWindow::time_sl0);
+
+ //connect (stw, Stopwatch::return_funk, this, &MainWindow::time_sl0);
 }
 MainWindow::~MainWindow()
 {
@@ -31,35 +39,54 @@ void MainWindow::on_pb_t_toggled(bool checked)
         ui->tbr->setStyleSheet("background-color: white");
 }
 
-
-void MainWindow::time_sl0()
+void MainWindow::time_sl0_mw()
 {
-   ui->tbr->setText(Stopwatch::time_now);
+   ui->lb_time->setText("Время: "+stw->return_funk());
 }
 
-
+void MainWindow::time_sl0(QString str)
+{
+   ui->lb_time->setText(str+stw->return_funk());
+}
 
 void MainWindow::get_string(QString str)
 {
-   ui->tbr->setText("yjdsq"+str);
+   ui->tbr->append("круг "+stw->time_now0+str);
 }
 
-void MainWindow::on_pb_ss_toggled(bool agv)
+void MainWindow::on_pb_ss_toggled(bool agv1)
 {
-    if(agv)        
-    {
+    bool agv2=true;
+    if(agv1 && started0==false)
+    {started0=true;
+    time_mw->start();}
+    else {time_mw->stop();
+    started0=false;}   
+    if(agv1)
+    {      
         ui->pb_ss->setText("стоп");
-        stw->Stopwatch::SendSignal_string(agv);
+        stw->Stopwatch::SendSignal_string(agv1, agv2);
     }
     else
-        ui->pb_ss->setText("продолжить");
+    {
+        stw->Stopwatch::SendSignal_string(agv1, agv2);
+        ui->pb_ss->setText("продолжить");}
 }
 
 
 void MainWindow::on_pb_clear_clicked()
-{
-    //if(!ui->pb_clear->isChecked())
-        ui->lb_time->setText("Время");
+{   started0=false;
+    time_mw->stop();
+    ui->lb_time->setText("Время");
     ui->pb_ss->setText("старт");
+    stw->Nooling();
+}
+
+
+void MainWindow::on_pb_round_clicked()
+{
+   bool agv2=false, agv1=true;
+    stw->Stopwatch::SendSignal_string(agv1, false);
+   ui->tbr->append(stw->return_funk());
 }
 

@@ -11,16 +11,16 @@ class Stopwatch: public QObject
     Q_OBJECT
 public:
 explicit Stopwatch(QObject *parent = nullptr);
-
-QString time_now="00:00:00";
-QString time_now0="00:00:00";
+QString return_funk();
+QString time_now="00:00:00";  //стоп-старт
+QString time_now0="00:00:00";  //круг
     ~Stopwatch();
-int  time1_2=0, time1=0, time2=0, time21=0,  thema;
+int  time1_2=0, time1=0, time2=0, time21=0;
+bool ag1=false, ag2=false;
 
-void SendSignal_string(bool);
+void SendSignal_string(bool, bool); //Передать строку обычным методом
 
-
-
+void Nooling();
 public slots:
 void time_sl();
 
@@ -29,7 +29,6 @@ void sig_to_mw_label(QString);//+++++
 
 public:
 
-QTimer *time, *time0, *time00;
-};
+QTimer *time, *time0, *tome00;
 
 #endif // STOPWATCH_H

@@ -14,10 +14,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    bool started0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 public slots:
-     void time_sl0();
+    void time_sl0_mw();
+     void time_sl0(QString str);
+
+private slots:
+     void on_pb_round_clicked();
 
 private slots:
     void on_pb_t_toggled(bool checked);
@@ -30,6 +35,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Stopwatch *stw;
-
+QTimer *time_mw;
 };
 #endif // MAINWINDOW_H
