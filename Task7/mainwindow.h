@@ -58,6 +58,9 @@ private:
     //++++++
    // void ViewGraph(void);
 
+    QFutureWatcher<void> fut_sig; //++++
+ QFuture<void> result; //++++
+
       // QVector<double> ConstructMouse(int numForm, QVector<double> x);
 
       // GraphicChart* graphClass;
@@ -66,8 +69,8 @@ private:
        QGridLayout *layout;
      QTimer *time;
        //
-         QList<QLineSeries*> ptrGraph;
-       //-------
+        QLineSeries* ptrGraph;  // список не нужен, так как 1 график
+   //-------
 
 };
 #endif // MAINWINDOW_H

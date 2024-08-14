@@ -21,10 +21,16 @@ MainWindow::MainWindow(QWidget *parent)
   //     graphClass = new GraphicChart(NUM_GRAPHS);
        //chart -> chartVuiew -> данные для отображения
 
-    ptrGraph.resize(1);
+   // ptrGraph.resize(100);
+    //Создаём объект серии
+
+        ptrGraph=new QLineSeries(this);
+
        layout = new QGridLayout;
  //      ui->wid_chart->setLayout(layout);
        layout->addWidget(chartView);
+       chartView->chart()->createDefaultAxes();
+      // QThread::sleep(std::chrono::seconds{1}); не конвентирует
        chartView->show( );
 //--------
 
@@ -247,14 +253,17 @@ void MainWindow::on_pb_start_clicked()
                                                  * Тут необходимо реализовать код наполнения серии
                                                  * и вызов сигнала для отображения графика
                                                  */
+                                                for(int j=0; j<100; j++)
+                                                ptrGraph->append(j*0.01, res[j]);
+//chartView->show( ); ошибка не тот поток
 
                                              };
 
-    auto result = QtConcurrent::run(read)
+     result = QtConcurrent::run(read)
                                .then(process)
                                .then(findMax);
-
-
+fut_sig.setFuture(result);
+connect(&result.isFinished. &fut_sig. this, MainWindow::chart->show());
 
 }
 
