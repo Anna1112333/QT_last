@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
        //И создадим объект нашего класса.
   //     graphClass = new GraphicChart(NUM_GRAPHS);
        //chart -> chartVuiew -> данные для отображения
-
-   // ptrGraph.resize(100);
     //Создаём объект серии
 
         ptrGraph=new QLineSeries(this);
@@ -29,11 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
        layout = new QGridLayout;
  //      ui->wid_chart->setLayout(layout);
        layout->addWidget(chartView);
-       chartView->chart()->createDefaultAxes();
+      // chartView->chart()->createDefaultAxes();
       // QThread::sleep(std::chrono::seconds{1}); не конвентирует
-       chartView->show( );
-//--------
 
+//--------
+       connect(this, sig_from_thread, this, slot_thread);
 }
 
 MainWindow::~MainWindow()
@@ -256,15 +254,23 @@ void MainWindow::on_pb_start_clicked()
                                                 for(int j=0; j<100; j++)
                                                 ptrGraph->append(j*0.01, res[j]);
 //chartView->show( ); ошибка не тот поток
-
+QObject sig;
+   //+++
+emit sig_from_thread();
                                              };
 
-     result = QtConcurrent::run(read)
+    auto result = QtConcurrent::run(read)
                                .then(process)
                                .then(findMax);
-fut_sig.setFuture(result);
-connect(&result.isFinished. &fut_sig. this, MainWindow::chart->show());
 
+}
+
+void MainWindow::slot_thread()
+{
+    qDebug()<<"Slot is there";
+   // chart -> chartVuiew;
+    chartView->chart()->createDefaultAxes();
+chartView->show( );
 }
 
 

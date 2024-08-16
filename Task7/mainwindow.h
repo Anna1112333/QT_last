@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDebug>
 #include <QTimer>
 #include <QMainWindow>
 #include <QFileDialog>
@@ -44,8 +45,10 @@ public:
 private slots:
     void on_pb_path_clicked();
     void on_pb_start_clicked();
+    void slot_thread();
 
-
+signals:     //+++
+    void sig_from_thread();  //+++
 
 private:
     Ui::MainWindow *ui;
@@ -56,19 +59,11 @@ private:
     QVector<double> procesData;
     QVector<double> mins, maxs;
     //++++++
-   // void ViewGraph(void);
 
-    QFutureWatcher<void> fut_sig; //++++
- QFuture<void> result; //++++
-
-      // QVector<double> ConstructMouse(int numForm, QVector<double> x);
-
-      // GraphicChart* graphClass;
        QChart* chart;
        QChartView* chartView;
        QGridLayout *layout;
-     QTimer *time;
-       //
+        QTimer *time;
         QLineSeries* ptrGraph;  // список не нужен, так как 1 график
    //-------
 
