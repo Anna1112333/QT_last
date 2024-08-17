@@ -39,17 +39,19 @@ public:
     QVector<double> FindMin(QVector<double> resultData);
     //Метод отображает результаты
     void DisplayResult(QVector<double> mins, QVector<double> maxs);
-
+bool begin_end=false;
 
 
 private slots:
     void on_pb_path_clicked();
     void on_pb_start_clicked();
     void slot_thread();
+    void slot2_thread();
+    void time_s();
 
 signals:     //+++
     void sig_from_thread();  //+++
-
+    void sig2_from_thread();
 private:
     Ui::MainWindow *ui;
     QString pathToFile = "";

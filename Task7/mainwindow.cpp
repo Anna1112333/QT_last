@@ -8,8 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->pb_clearResult->setCheckable(true);
 //++++++
+    time=new QTimer(this);
+     //startTimer(1000);
+    time->setInterval(1000);
+    connect(time, &QTimer::timeout, this, &MainWindow::time_s);
     //Выделим память под наши объекты.
-
        //Объект QChart является основным, в котором хранятся все данные графиков и который отвечает
        //за само поле отображения графика, управляет осями, легенодой и прочими атрибутами графика.
        chart = new QChart( );
@@ -17,10 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
        //Объект QChartView является виджетом отображальщиком графика. В его конструктор необходимо передать ссылку
        //на объект QChart.
        chartView = new QChartView(chart);
-       //И создадим объект нашего класса.
-  //     graphClass = new GraphicChart(NUM_GRAPHS);
-       //chart -> chartVuiew -> данные для отображения
-    //Создаём объект серии
 
         ptrGraph=new QLineSeries(this);
 
@@ -32,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 //--------
        connect(this, sig_from_thread, this, slot_thread);
+       connect(this, sig2_from_thread, this, slot2_thread);
 }
 
 MainWindow::~MainWindow()
@@ -50,7 +50,7 @@ MainWindow::~MainWindow()
 /****************************************************/
 QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
 {
-
+begin_end=true;
     QFile file(path);
     file.open(QIODevice::ReadOnly);
 
@@ -64,7 +64,8 @@ QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
         }
     }
     else{
-
+    //time->start();
+        emit sig2_from_thread();
         //продумать как выйти из функции
     }
 
@@ -76,7 +77,7 @@ QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
     readData.clear();
     uint32_t currentWorld = 0, sizeFrame = 0;
 
-    while(dataStream.atEnd() == false){
+    while(dataStream.atEnd() == false && begin_end==true){
 
         dataStream >> currentWorld;
 
@@ -133,15 +134,14 @@ QVector<double> MainWindow::FindMax(QVector<double> resultData)
     double max = 0, sMax=0;
     //Поиск первого максиума
     foreach (double num, resultData){
-        //QThread::usleep(1);
-        if(num > max){
+           if(num > max){
             max = num;
         }
     }
 
     //Поиск 2го максимума
     foreach (double num, resultData){
-        //QThread::usleep(1);
+
         if(num > sMax && (qFuzzyCompare(num, max) == false)){
             sMax = num;
         }
@@ -251,13 +251,13 @@ void MainWindow::on_pb_start_clicked()
                                                  * Тут необходимо реализовать код наполнения серии
                                                  * и вызов сигнала для отображения графика
                                                  */
-                                                for(int j=0; j<100; j++)
+                                               // begin_end=true;
+                                                for(int j=0; begin_end==true, j<1000; j++)
                                                 {qDebug()<<("y is %d", res[j]);
                                                 ptrGraph->append(j*0.01, res[j]);
                                                 }
 
-//chartView->show( ); ошибка не тот поток
-QObject sig;
+
    //+++
 emit sig_from_thread();
                                              };
@@ -273,7 +273,19 @@ void MainWindow::slot_thread()
     qDebug()<<"Slot is there";
  chart ->addSeries(ptrGraph);
     chartView->chart()->createDefaultAxes();
-chartView->show( );
+    chartView->show( );
+}
+
+void MainWindow::slot2_thread()
+{qDebug()<<"0 секунд";
+    //sig2_from_thread();
+    time->start();
+}
+
+void MainWindow::time_s()
+{begin_end=false;
+    time->stop();
+    qDebug()<<"1 секунда";
 }
 
 
