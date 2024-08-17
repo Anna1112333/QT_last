@@ -252,7 +252,10 @@ void MainWindow::on_pb_start_clicked()
                                                  * и вызов сигнала для отображения графика
                                                  */
                                                 for(int j=0; j<100; j++)
+                                                {qDebug()<<("y is %d", res[j]);
                                                 ptrGraph->append(j*0.01, res[j]);
+                                                }
+
 //chartView->show( ); ошибка не тот поток
 QObject sig;
    //+++
@@ -268,7 +271,7 @@ emit sig_from_thread();
 void MainWindow::slot_thread()
 {
     qDebug()<<"Slot is there";
-   // chart -> chartVuiew;
+ chart ->addSeries(ptrGraph);
     chartView->chart()->createDefaultAxes();
 chartView->show( );
 }
