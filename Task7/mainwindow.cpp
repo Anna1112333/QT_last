@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
        layout = new QGridLayout;
  //      ui->wid_chart->setLayout(layout);
        layout->addWidget(chartView);
-      // chartView->chart()->createDefaultAxes();
+       chartView->chart()->ChartThemeDark;
       // QThread::sleep(std::chrono::seconds{1}); не конвентирует
 
 //--------
@@ -64,7 +64,7 @@ begin_end=true;
         }
     }
     else{
-    //time->start();
+
         emit sig2_from_thread();
         //продумать как выйти из функции
     }
@@ -252,14 +252,19 @@ void MainWindow::on_pb_start_clicked()
                                                  * и вызов сигнала для отображения графика
                                                  */
                                                // begin_end=true;
-                                                for(int j=0; begin_end==true, j<1000; j++)
+                                               //
+                                                for(int j=0;  j<3000; j++)
                                                 {qDebug()<<("y is %d", res[j]);
+
                                                 ptrGraph->append(j*0.01, res[j]);
+                                                if(begin_end==false){
+                                                emit sig_from_thread();
+                                                begin_end=true;}
                                                 }
 
 
    //+++
-emit sig_from_thread();
+
                                              };
 
     auto result = QtConcurrent::run(read)
@@ -271,6 +276,7 @@ emit sig_from_thread();
 void MainWindow::slot_thread()
 {
     qDebug()<<"Slot is there";
+
  chart ->addSeries(ptrGraph);
     chartView->chart()->createDefaultAxes();
     chartView->show( );
@@ -285,6 +291,7 @@ void MainWindow::slot2_thread()
 void MainWindow::time_s()
 {begin_end=false;
     time->stop();
+
     qDebug()<<"1 секунда";
 }
 
