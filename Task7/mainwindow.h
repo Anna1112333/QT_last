@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QDebug>
-#include <QTimer>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QDataStream>
@@ -47,7 +46,7 @@ private slots:
     void on_pb_start_clicked();
     void slot_thread();
     void slot2_thread();
-    void time_s();
+
 
 signals:     //+++
     void sig_from_thread();  //+++
@@ -65,8 +64,7 @@ private:
        QChart* chart;
        QChartView* chartView;
        QGridLayout *layout;
-        QTimer *time;
-        QLineSeries* ptrGraph;  // список не нужен, так как 1 график
+       QLineSeries* ptrGraph;  // список не нужен, так как 1 график
    //-------
 
 };

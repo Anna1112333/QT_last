@@ -8,10 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->pb_clearResult->setCheckable(true);
 //++++++
-    time=new QTimer(this);
-     //startTimer(1000);
-    time->setInterval(1000);
-    connect(time, &QTimer::timeout, this, &MainWindow::time_s);
+
     //Выделим память под наши объекты.
        //Объект QChart является основным, в котором хранятся все данные графиков и который отвечает
        //за само поле отображения графика, управляет осями, легенодой и прочими атрибутами графика.
@@ -24,10 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
         ptrGraph=new QLineSeries(this);
 
        layout = new QGridLayout;
- //      ui->wid_chart->setLayout(layout);
+
        layout->addWidget(chartView);
-       chartView->chart()->ChartThemeDark;
-      // QThread::sleep(std::chrono::seconds{1}); не конвентирует
 
 //--------
        connect(this, sig_from_thread, this, slot_thread);
@@ -77,7 +72,8 @@ begin_end=true;
     readData.clear();
     uint32_t currentWorld = 0, sizeFrame = 0;
 
-    while(dataStream.atEnd() == false && begin_end==true){
+    while(dataStream.atEnd() == false)
+    {
 
         dataStream >> currentWorld;
 
@@ -250,18 +246,14 @@ void MainWindow::on_pb_start_clicked()
                                                 /*
                                                  * Тут необходимо реализовать код наполнения серии
                                                  * и вызов сигнала для отображения графика
-                                                 */
-                                               // begin_end=true;
-                                               //
-                                                for(int j=0;  j<3000; j++)
+                                                 */                                              
+
+                                                for(int j=0;  j<1000; j++)
                                                 {qDebug()<<("y is %d", res[j]);
 
-                                                ptrGraph->append(j*0.01, res[j]);
-                                                if(begin_end==false){
-                                                emit sig_from_thread();
-                                                begin_end=true;}
+                                                ptrGraph->append(j*0.01, res[j]);                                                
                                                 }
-
+emit sig_from_thread();
 
    //+++
 
@@ -284,15 +276,9 @@ void MainWindow::slot_thread()
 
 void MainWindow::slot2_thread()
 {qDebug()<<"0 секунд";
-    //sig2_from_thread();
-    time->start();
+
 }
 
-void MainWindow::time_s()
-{begin_end=false;
-    time->stop();
 
-    qDebug()<<"1 секунда";
-}
 
 
