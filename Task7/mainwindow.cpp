@@ -251,7 +251,7 @@ void MainWindow::on_pb_start_clicked()
                                                 for(int j=0;  j<1000; j++)
                                                 {qDebug()<<("y is %d", res[j]);
 
-                                                ptrGraph->append(j*0.01, res[j]);                                                
+                                                ptrGraph->append(j*0.001, res[j]);
                                                 }
 emit sig_from_thread();
 
