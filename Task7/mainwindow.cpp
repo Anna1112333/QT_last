@@ -270,13 +270,15 @@ void MainWindow::slot_thread()
     qDebug()<<"Slot is there";
 
  chart ->addSeries(ptrGraph);
+
     chartView->chart()->createDefaultAxes();
     chartView->show( );
+
 }
 
 void MainWindow::slot2_thread()
 {qDebug()<<"0 секунд";
-
+ptrGraph->clear();
 }
 
 
