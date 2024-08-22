@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
        //Объект QChartView является виджетом отображальщиком графика. В его конструктор необходимо передать ссылку
        //на объект QChart.
        chartView = new QChartView(chart);
-
+chartView->resize(600, 400);
         ptrGraph=new QLineSeries(this);
 
        layout = new QGridLayout;
@@ -279,8 +279,16 @@ void MainWindow::slot_thread()
 void MainWindow::slot2_thread()
 {qDebug()<<"0 секунд";
 ptrGraph->clear();
+chart->removeSeries(ptrGraph);
 }
 
 
 
+
+
+void MainWindow::on_pb_clearResult_clicked()
+{
+
+    emit sig2_from_thread();
+}
 

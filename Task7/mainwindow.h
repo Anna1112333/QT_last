@@ -48,6 +48,8 @@ private slots:
     void slot2_thread();
 
 
+    void on_pb_clearResult_clicked();
+
 signals:     //+++
     void sig_from_thread();  //+++
     void sig2_from_thread();
